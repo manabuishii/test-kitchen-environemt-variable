@@ -65,3 +65,18 @@ Recipe: test-kitchen-environment-variable::default
 
   * log[options    is [-O3 -lm]] action write
 ```
+
+## if environment value is not set.
+
+```
+SOURCECODE= kitchen converge
+```
+
+### Result
+
+```
+Recipe: test-kitchen-environment-variable::default
+  * log[sourcecode is [stable.tar.gz]] action write
+
+  * log[options    is [-O3 -lm]] action write
+```
