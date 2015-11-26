@@ -1,2 +1,2 @@
-name "test-kitchen-environemt-variable"
+name "test-kitchen-environment-variable"
 version "0.1.0"

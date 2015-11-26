@@ -14,8 +14,8 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[test-kitchen-environemt-variable]
+      - recipe[test-kitchen-environment-variable]
     attributes:
-      test_kitchen_environemt_variable:
+      test_kitchen_environment_variable:
         #
         sourcecode: <%= ENV['FOO'] || "kitchen local yaml default value" %>
