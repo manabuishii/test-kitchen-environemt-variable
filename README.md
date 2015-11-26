@@ -2,62 +2,66 @@
 
 # Purpose
 
-Test how test kitchen use environment variable.
+Test how test kitchen use attributes value.
 
-## recipe default value
+I want to select these situation.
+
+1. recipe default (attributes) value.
+2. .kitchen.yml value
+3. environment value
+
+# Conclusion
+
+```
+attributes:
+  test_kitchen_environment_variable:
+    sourcecode: <%= ENV['SOURCECODE'] || "test.tar.gz" %>
+```
+
+# Check
+
+
+
+## Recipe default value and set value by .kitchen.yml
 
 ```
 kitchen converge
 ```
 
-### result
+
+
+***sourcecode*** default value is ***stable.tar.gz*** which is set by attributes/default.rb .
+
+In this case
+
+***sourcecode*** value is ***test.tar.gz*** which is set by .kitchen.yml .
+
+***options*** default value is ***-O3 -lm*** which is only set by attributes/default.rb .
+
+### Result
 
 ```
-Recipe: test-kitchen-environemt-variable::default
-  * log[variable is [recipe default value]] action write
+Recipe: test-kitchen-environment-variable::default
+  * log[sourcecode is [test.tar.gz]] action write
+
+  * log[options    is [-O3 -lm]] action write
 ```
 
-## .kitchen.erubytest.yml file
-
-.kitchen.yml and .kitchen.erubytest.yml is almost same.
-
-Only one difference is set variable in .kitchen.erubytest.yml
-
-```diff
---- .kitchen.yml	2015-11-26 13:30:33.810372169 +0900
-+++ .kitchen.erubytest.yml	2015-11-26 13:24:02.944433969 +0900
-@@ -15,3 +15,7 @@
-   - name: default
-     run_list:
-       - recipe[test-kitchen-environemt-variable]
-+    attributes:
-+      test_kitchen_environemt_variable:
-+        #
-+        sourcecode: <%= ENV['FOO'] || "kitchen local yaml default value" %>
-```
-
-### Use .kitchen.erubytest.yml default value
+## Use environment value
 
 ```
-KITCHEN_YAML=.kitchen.erubytest.yml kitchen converge
+SOURCECODE=devel.tar.gz kitchen converge
 ```
 
-### result
+***sourcecode*** value is ***test.tar.gz*** which is set by environment value SOURCECODE.
+
+***options*** default value is ***-O3 -lm*** which is set by attributes/default.rb .
+
+### Result
 
 ```
-Recipe: test-kitchen-environemt-variable::default
-  * log[variable is [kitchen local yaml default value]] action write
-```
+Recipe: test-kitchen-environment-variable::default
+  * log[sourcecode is [devel.tar.gz]] action write
 
-### Use environment value
-
-```
-FOO=foobar KITCHEN_YAML=.kitchen.erubytest.yml kitchen converge
-```
-
-### result
-
-```
-Recipe: test-kitchen-environemt-variable::default
-  * log[variable is [foobar]] action write
+  * log[options    is [-O3 -lm]] action write
 ```
